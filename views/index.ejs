@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Members</title>
+</head>
+<body>
+    <h1>Members</h1>
+    <!-- filter -->
+    <h2>Filter</h2>
+    <form method="GET" action="/">
+        <input 
+            type="text" 
+            name="search" 
+            placeholder="Search by name"
+            value="<%= typeof search !== 'undefined' ? search : '' %>"
+        >
+        <select name="subcircle">
+            <option value="">All Subcircles</option>
+            <option value="NodeJS" <%= subcircle === "NodeJS" ? "selected" : "" %>>NodeJS</option>
+            <option value="PHP" <%= subcircle === "PHP" ? "selected" : "" %>>PHP</option>
+            <option value="Java" <%= subcircle === "Java" ? "selected" : "" %>>Java</option>
+            <option value=".NET" <%= subcircle === ".NET" ? "selected" : "" %>>.NET</option>
+        </select>
+
+        <select name="level">
+            <option value="">All Levels</option>
+            <option value="Beginner" <%= level === "Beginner" ? "selected" : "" %>>Beginner</option>
+            <option value="Intermediate" <%= level === "Intermediate" ? "selected" : "" %>>Intermediate</option>
+            <option value="Advanced" <%= level === "Advanced" ? "selected" : "" %>>Advanced</option>
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    <hr>
+
+    <!-- add member -->
+    <h2>Add Member</h2>
+    <form method="POST" action="/members">
+        <input type="text" name="name" placeholder="Name" required>
+
+        <select name="subcircle">
+            <option>NodeJS</option>
+            <option>PHP</option>
+            <option>Java</option>
+            <option>.NET</option>
+        </select>
+
+        <select name="level">
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+        </select>
+
+        <button type="submit">Add</button>
+    </form>
+
+    <hr>
+
+    <!-- members list -->
+    <h2>All Members</h2>
+    <% if (members.length === 0) { %>
+        <p>No members found</p>
+    <% } %>
+    <% members.forEach(member => { %>
+        <form method="POST" action="/members/edit/<%= member._id %>">
+            <input type="text" name="name" value="<%= member.name %>" required>
+            <select name="subcircle">
+                <option <%= member.subcircle === "NodeJS" ? "selected" : "" %>>NodeJS</option>
+                <option <%= member.subcircle === "PHP" ? "selected" : "" %>>PHP</option>
+                <option <%= member.subcircle === "Java" ? "selected" : "" %>>Java</option>
+                <option <%= member.subcircle === ".NET" ? "selected" : "" %>>.NET</option>
+            </select>
+            <select name="level">
+                <option <%= member.level === "Beginner" ? "selected" : "" %>>Beginner</option>
+                <option <%= member.level === "Intermediate" ? "selected" : "" %>>Intermediate</option>
+                <option <%= member.level === "Advanced" ? "selected" : "" %>>Advanced</option>
+            </select>
+            <button type="submit">Update</button>
+        </form>
+        <form method="POST" action="/members/delete/<%= member._id %>">
+            <button type="submit">Delete</button>
+        </form>
+        <hr>
+    <% }) %>
+
+</body>
+</html>
